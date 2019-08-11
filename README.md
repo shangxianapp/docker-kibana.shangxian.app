@@ -63,7 +63,7 @@ http {
                         '"request_method": "$request_method", '
                         '"http_referrer": "$http_referer", '
                         '"http_x_forwarded_for": "$http_x_forwarded_for", '
-                        '"cache_status": "$upstream_cache_status", '
+                        '"nginx_cache_status": "$upstream_cache_status", '
                         '"http_user_agent": "$http_user_agent" }';
 }
 ```

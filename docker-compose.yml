@@ -1,12 +1,17 @@
 version: '3'
 
 services:
-  elasticsearch:
+  kibana-elasticsearch:
     container_name: kibana-elasticsearch
     image: 'elasticsearch:6.5.4'
     restart: always
+    environment:
+      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+      network.bind_host: 0.0.0.0
+      network.host: 0.0.0.0
+      discovery.type: single-node
 
-  fluentd:
+  kibana-fluentd:
     container_name: kibana-fluentd
     build: ./fluentd
     volumes:
@@ -21,6 +26,7 @@ services:
     restart: always
     depends_on:
       - kibana-fluentd
+      - kibana-elasticsearch
     environment:
       ELASTICSEARCH_URL: http://kibana-elasticsearch:9200
 
