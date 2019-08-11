@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  elasticsearch:
+    container_name: kibana-elasticsearch
+    image: 'elasticsearch:6.5.4'
+    restart: always
+
+  fluentd:
+    container_name: kibana-fluentd
+    build: ./fluentd
+    volumes:
+      - ./fluentd:/fluentd/etc/
+    restart: always
+    depends_on:
+      - kibana-elasticsearch
+
+  kibana:
+    container_name: kibana
+    image: kibana:6.5.4
+    restart: always
+    depends_on:
+      - kibana-fluentd
+    environment:
+      ELASTICSEARCH_URL: http://kibana-elasticsearch:9200
+
+networks:
+  default:
+    external:
+      name: "${DOCKER_PRIVATE_NETWORK_NAME}"
